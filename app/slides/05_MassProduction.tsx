@@ -30,7 +30,7 @@ export default function MassProduction() {
           현장에서 발생하는 이분법 (One-of-Two Failure)
         </p>
         <CardGrid cols={2}>
-          <Card title="① 납기 사고 (Stock-out)" accent="rose">
+          <Card title="① 납기 사고 · 재고 소진" accent="rose">
             <ul className="list-disc pl-4 space-y-1">
               <li>구매팀이 <b>매일 스케줄을 붙잡고</b> 매크로 · 수식으로 계산</li>
               <li>휴가·병가·이관 발생 시 즉각 리스크</li>
@@ -38,10 +38,10 @@ export default function MassProduction() {
               <li>고객 페널티 · 신뢰도 손상</li>
             </ul>
           </Card>
-          <Card title="② 과잉 재고 (Over-stock)" accent="amber">
+          <Card title="② 과잉 재고" accent="amber">
             <ul className="list-disc pl-4 space-y-1">
               <li>납기 사고를 피하기 위해 <b>안전 재고를 크게</b> 설정</li>
-              <li>운전자본(Working Capital) 잠식</li>
+              <li>운전 자본 잠식</li>
               <li>단종·모델 변경 시 <b>재고 자산 손실</b></li>
               <li>창고 공간 · 관리 인력의 추가 비용</li>
             </ul>
@@ -62,8 +62,8 @@ export default function MassProduction() {
         <BlockFlow
           items={[
             { num: "01", title: "다중 시트 참조", sub: "링크 깨짐 · 순환 참조" },
-            { num: "02", title: "매크로 관리", sub: "속인화 · Undocumented" },
-            { num: "03", title: "동시 편집 충돌", sub: "MERGE / OVERWRITE" },
+            { num: "02", title: "매크로 관리", sub: "속인화 · 문서화 부재" },
+            { num: "03", title: "동시 편집 충돌", sub: "덮어쓰기 · 병합 실패" },
             { num: "04", title: "감사 이력 부재", sub: "누가 언제 왜 바꿨나" },
           ]}
           compact

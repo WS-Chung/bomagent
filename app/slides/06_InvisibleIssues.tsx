@@ -37,7 +37,7 @@ export default function InvisibleIssues() {
       </div>
 
       <CardGrid cols={2}>
-        <Card title="자산 등재의 비대칭" accent="brand" badge="Asymmetry">
+        <Card title="자산 등재의 비대칭" accent="brand" badge="시야가 다름">
           <ul className="list-disc pl-4 space-y-1">
             <li>
               엔지니어는 <b>모델과 수량은 선정</b>하지만, 이후 실물 관리에는
@@ -50,7 +50,7 @@ export default function InvisibleIssues() {
             <li>결과적으로 어느 부서도 실물의 전체 상태를 완전히 파악하지 못한다</li>
           </ul>
         </Card>
-        <Card title="창고 로케이션 손실" accent="rose" badge="Warehouse Ops">
+        <Card title="창고 위치 정보 손실" accent="rose" badge="창고 운영">
           <ul className="list-disc pl-4 space-y-1">
             <li>현장 입고 담당자와 사무실 입고 처리자가 다르다</li>
             <li>물건이 놓인 정확한 위치를 모른 채 전표만 입력</li>
@@ -62,7 +62,7 @@ export default function InvisibleIssues() {
 
       <div className="rounded-2xl glass p-4 sm:p-5 space-y-3">
         <p className="text-[12px] uppercase tracking-[0.18em] text-brand-300 font-semibold">
-          연말 재고 실사 시나리오 (As-Is)
+          연말 재고 실사 시나리오 · 현행
         </p>
         <BlockFlow
           items={[
@@ -77,8 +77,8 @@ export default function InvisibleIssues() {
 
       <Callout variant="danger" title="구조적 원인">
         세 부서의 시야가 다른 것은 <b>정상</b>이다. 문제는 이 세 시야가{" "}
-        <b>서로 다른 데이터 소스를 근거로 하고 있다</b>는 점이다. 단일 데이터
-        원본(SSOT) 위에서 각 부서가 필요한 뷰만 소비하는 구조로 전환해야
+        <b>서로 다른 데이터 원본을 근거로 하고 있다</b>는 점이다. 단일 진실
+        공급원(SSoT) 위에서 각 부서가 필요한 뷰만 소비하는 구조로 전환해야
         한다.
       </Callout>
     </SlideShell>

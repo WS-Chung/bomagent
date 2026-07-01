@@ -4,7 +4,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "BOM Agent · 자재관리 에이전트 소개",
   description:
-    "PCB 양산 밸류체인의 균열 지점을 진단하고, 설계-구매-자재-회계를 하나의 SSOT로 잇는 BOM 자재관리 에이전트 소개.",
+    "다품종 부품을 다루는 제조 밸류체인의 균열 지점을 진단하고, 설계-구매-자재-회계를 하나의 단일 진실 공급원(SSoT)으로 잇는 BOM 자재관리 에이전트 소개.",
 };
 
 export const viewport: Viewport = {

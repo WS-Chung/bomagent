@@ -11,12 +11,12 @@ export default function Overview() {
         <h1 className="mt-5 text-4xl sm:text-6xl font-extrabold tracking-tight leading-[1.05]">
           설계-구매-자재를
           <br />
-          하나의 <span className="gradient-text">Single Source of Truth</span>로.
+          하나의 <span className="gradient-text">단일 진실 공급원 (SSoT)</span>로.
         </h1>
         <p className="mt-6 text-base sm:text-lg text-slate-300 leading-relaxed">
-          PCB 양산 밸류체인의 균열 지점을 진단하고, BOM · 재고 · 양산계획 ·
-          공급망을 한 화면에서 결정 가능한 데이터로 통합하는 로컬 자재관리
-          에이전트.
+          다품종 부품을 다루는 제조 밸류체인의 균열 지점을 진단하고, BOM · 재고
+          · 양산계획 · 공급망을 한 화면에서 결정 가능한 데이터로 통합하는 로컬
+          자재관리 에이전트.
         </p>
 
         <dl className="mt-10 grid grid-cols-2 sm:grid-cols-4 gap-3 max-w-3xl">

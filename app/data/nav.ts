@@ -13,25 +13,25 @@ export const navItems: NavItem[] = [
   // PROBLEM · 현황 진단
   {
     id: "value-chain",
-    label: "제조 밸류체인 순환 구조",
+    label: "밸류체인 순환",
     number: "02",
     group: "PROBLEM · 현황 진단",
   },
   {
     id: "design-bom",
-    label: "설계·부품 선정: BOM의 사장(死藏)",
+    label: "묻히는 BOM",
     number: "03",
     group: "PROBLEM · 현황 진단",
   },
   {
     id: "procurement-gap",
-    label: "구매·소싱: 오퍼레이터화의 한계",
+    label: "구매 오퍼레이터화",
     number: "04",
     group: "PROBLEM · 현황 진단",
   },
   {
     id: "mass-production",
-    label: "양산·발주: 납기 리스크 vs 과잉 재고",
+    label: "납기 vs 과잉재고",
     number: "05",
     group: "PROBLEM · 현황 진단",
   },
@@ -43,13 +43,13 @@ export const navItems: NavItem[] = [
   },
   {
     id: "ssot-absent",
-    label: "SSOT 부재: 부서 간 정보 파편화",
+    label: "SSoT 부재",
     number: "07",
     group: "PROBLEM · 현황 진단",
   },
   {
     id: "comm-overhead",
-    label: "커뮤니케이션 오버헤드",
+    label: "커뮤니케이션 비용",
     number: "08",
     group: "PROBLEM · 현황 진단",
   },
@@ -69,7 +69,7 @@ export const navItems: NavItem[] = [
   },
   {
     id: "features",
-    label: "핵심 기능 맵",
+    label: "핵심 기능",
     number: "11",
     group: "SOLUTION · BOM Agent",
   },
@@ -83,7 +83,7 @@ export const navItems: NavItem[] = [
   // IMPACT · 도입 효과
   {
     id: "before-after",
-    label: "Before / After 워크플로우",
+    label: "Before / After",
     number: "13",
     group: "IMPACT · 도입 효과",
   },
@@ -97,7 +97,7 @@ export const navItems: NavItem[] = [
   // ROADMAP · 확장 방향
   {
     id: "roadmap",
-    label: "시니어 관점 확장 로드맵",
+    label: "확장 로드맵",
     number: "15",
     group: "ROADMAP · 확장 방향",
   },

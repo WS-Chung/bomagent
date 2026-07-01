@@ -26,25 +26,25 @@ export default function CommOverhead() {
       </div>
 
       <CardGrid cols={3}>
-        <Card title="시간 비용" accent="amber" badge="Time">
+        <Card title="시간 비용" accent="amber" badge="시간">
           <ul className="list-disc pl-4 space-y-1">
             <li>주 단위 미팅이 아니라 <b>거의 매일 미팅</b></li>
-            <li>회의 후 문서 정합성 확인에 <b>하루 반나절</b></li>
+            <li>회의 후 문서 대조에 <b>하루 반나절</b></li>
             <li>실제 작업 시간은 크게 축소</li>
           </ul>
         </Card>
-        <Card title="정합성 비용" accent="brand" badge="Consistency">
+        <Card title="정합성 비용" accent="brand" badge="정합성">
           <ul className="list-disc pl-4 space-y-1">
             <li>부서마다 관리 문서 내용이 다름</li>
             <li>동기화 지연으로 <b>다른 숫자를 근거로 의사결정</b></li>
             <li>회의 종료 후에도 다음 회의까지 다시 어긋남</li>
           </ul>
         </Card>
-        <Card title="재무 비용" accent="rose" badge="Financial">
+        <Card title="재무 비용" accent="rose" badge="재무">
           <ul className="list-disc pl-4 space-y-1">
-            <li><b>중복 발주</b> · 무효 발주 · 취소 페널티</li>
+            <li><b>중복 발주</b> · 무효 발주 · 취소 위약금</li>
             <li>과잉 재고 유지 비용 · 자산 손실</li>
-            <li>납기 사고 시 항공특송 · 스팟 구매 프리미엄</li>
+            <li>납기 사고 시 항공 특송 · 긴급 구매 웃돈</li>
           </ul>
         </Card>
       </CardGrid>
