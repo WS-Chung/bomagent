@@ -96,7 +96,7 @@ export default function BeforeAfter() {
 
       <div className="rounded-2xl glass p-4 sm:p-5 space-y-3">
         <p className="text-[12px] uppercase tracking-[0.18em] text-brand-300 font-semibold">
-          정량 비교 · 동일 시나리오, 신규 BOM 1건·부품 60종 기준 추정
+          정량 비교 · 동일 시나리오, 신규 BOM 1건·부품 평균 70종 기준 추정
         </p>
         <div className="overflow-x-auto">
           <table className="w-full text-[14px]">
@@ -111,19 +111,19 @@ export default function BeforeAfter() {
             <tbody className="text-slate-200">
               <tr className="border-b border-slate-800/60">
                 <td className="py-2.5 px-3.5">투입 인력</td>
-                <td className="py-2.5 px-3.5 text-rose-300">3~4명</td>
+                <td className="py-2.5 px-3.5 text-rose-300">4~5명</td>
                 <td className="py-2.5 px-3.5 text-emerald-300">1명</td>
                 <td className="py-2.5 px-3.5">~75% ↓</td>
               </tr>
               <tr className="border-b border-slate-800/60">
                 <td className="py-2.5 px-3.5">소요 시간</td>
-                <td className="py-2.5 px-3.5 text-rose-300">1~2일</td>
+                <td className="py-2.5 px-3.5 text-rose-300">3~5일</td>
                 <td className="py-2.5 px-3.5 text-emerald-300">30분~1시간</td>
-                <td className="py-2.5 px-3.5">~90% ↓</td>
+                <td className="py-2.5 px-3.5">~95% ↓</td>
               </tr>
               <tr className="border-b border-slate-800/60">
                 <td className="py-2.5 px-3.5">동기화 회의 횟수</td>
-                <td className="py-2.5 px-3.5 text-rose-300">주 3~5회</td>
+                <td className="py-2.5 px-3.5 text-rose-300">매일</td>
                 <td className="py-2.5 px-3.5 text-emerald-300">주 0~1회</td>
                 <td className="py-2.5 px-3.5">~80% ↓</td>
               </tr>
@@ -143,7 +143,7 @@ export default function BeforeAfter() {
           </table>
         </div>
         <p className="text-[12px] text-slate-400">
-          위 수치는 60~80종 부품·4개 제품 규모의 중소 제조 업체를 가정한
+          위 수치는 60~100종 부품·12개 제품 규모의 중소 제조 업체를 가정한
           추정치이며, 실제 도입 시 <b>시범 프로젝트로 정량화</b>가 필요하다.
         </p>
       </div>
