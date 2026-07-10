@@ -40,6 +40,28 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.18); border-radius: 999px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(148,163,184,0.28); }
 
+/* === Sidebar 드로어 (레이아웃 안정성 — 플레인 CSS) ===
+   Tailwind 의 translate 오버라이드가 빌드에 따라 불안정해, 사이드바의
+   위치/표시는 플레인 CSS 로 확정한다. 모바일: 화면 밖 고정 드로어(토글 시 노출).
+   데스크톱(lg≥1024px): 일반 흐름에 sticky 로 좌측 고정 표시. */
+.app-sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  transform: translateX(-100%);
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.app-sidebar.is-open {
+  transform: translateX(0);
+}
+@media (min-width: 1024px) {
+  .app-sidebar {
+    position: sticky;
+    transform: none;
+  }
+}
+
 /* === FlowDiagram (vertical) === */
 .flow-card {
   display:flex; gap:1rem; padding:1rem 1.15rem; border-radius:1rem;

@@ -34,8 +34,8 @@ export default function Sidebar({ activeId, onSelect }: Props) {
         />
       )}
       <aside
-        className={`no-print fixed lg:sticky top-0 left-0 z-40 h-screen w-[280px] shrink-0 border-r border-slate-800/70 bg-ink-900/80 backdrop-blur-xl transition-transform duration-200 ${
-          mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0"
+        className={`app-sidebar no-print z-40 h-screen w-[280px] shrink-0 border-r border-slate-800/70 bg-ink-900/80 backdrop-blur-xl ${
+          mobileOpen ? "is-open" : ""
         }`}
       >
         <div className="h-full overflow-y-auto px-4 py-6">
