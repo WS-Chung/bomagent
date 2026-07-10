@@ -53,7 +53,7 @@ export default function Sidebar({ activeId, onSelect }: Props) {
                 BOM Agent
               </span>
               <span className="block text-xs text-brand-300 font-medium tracking-wide">
-                Material Ops · v1.0
+                제조 자재관리 · 세미나
               </span>
             </span>
           </button>
@@ -96,7 +96,7 @@ export default function Sidebar({ activeId, onSelect }: Props) {
                           >
                             {n.number}
                           </span>
-                          <span className="flex-1 text-left text-[14px] sm:text-[15px] leading-tight">
+                          <span className="flex-1 text-left text-[15px] sm:text-base leading-tight">
                             {n.label}
                           </span>
                           {isActive && !isAppendix && (

@@ -2,9 +2,9 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "BOM Agent · 자재관리 에이전트 소개",
+  title: "BOM Agent · 세미나",
   description:
-    "다품종 부품을 다루는 제조 밸류체인의 균열 지점을 진단하고, 설계-구매-자재-회계를 하나의 단일 진실 공급원(SSoT)으로 잇는 BOM 자재관리 에이전트 소개.",
+    "엑셀과 미팅으로 굴러가던 제조 자재관리를, AI로 하나의 실시간 화면으로. AS-IS / To-Be 세미나 자료.",
 };
 
 export const viewport: Viewport = {

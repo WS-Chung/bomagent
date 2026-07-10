@@ -11,9 +11,11 @@ export function CardGrid({
     cols === 4
       ? "sm:grid-cols-2 lg:grid-cols-4"
       : cols === 3
-      ? "sm:grid-cols-2 lg:grid-cols-3"
-      : "sm:grid-cols-2";
-  return <div className={`grid grid-cols-1 ${grid} gap-3.5`}>{children}</div>;
+        ? "sm:grid-cols-2 lg:grid-cols-3"
+        : "sm:grid-cols-2";
+  return (
+    <div className={`grid grid-cols-1 ${grid} gap-3.5`}>{children}</div>
+  );
 }
 
 export function Card({
@@ -33,12 +35,12 @@ export function Card({
     accent === "amber"
       ? "from-amber-500/20"
       : accent === "emerald"
-      ? "from-emerald-500/20"
-      : accent === "rose"
-      ? "from-rose-500/20"
-      : accent === "slate"
-      ? "from-slate-500/15"
-      : "from-brand-500/20";
+        ? "from-emerald-500/20"
+        : accent === "rose"
+          ? "from-rose-500/20"
+          : accent === "slate"
+            ? "from-slate-500/15"
+            : "from-brand-500/20";
   return (
     <div className="group relative rounded-2xl glass p-4 sm:p-5 transition hover:-translate-y-0.5 hover:border-brand-400/40">
       <div

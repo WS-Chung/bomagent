@@ -7,98 +7,15 @@ export type NavItem = {
 };
 
 export const navItems: NavItem[] = [
-  // INTRO
-  { id: "overview", label: "Overview", number: "01", group: "INTRO" },
+  { id: "overview", label: "개요", number: "01", group: "진단 · AS-IS" },
+  { id: "problem", label: "엑셀 BOM의 현실", number: "02", group: "진단 · AS-IS" },
+  { id: "root", label: "왜 반복되나", number: "03", group: "진단 · AS-IS" },
 
-  // PROBLEM · 현황 진단
-  {
-    id: "value-chain",
-    label: "밸류체인 순환",
-    number: "02",
-    group: "PROBLEM · 현황 진단",
-  },
-  {
-    id: "design-bom",
-    label: "묻히는 BOM",
-    number: "03",
-    group: "PROBLEM · 현황 진단",
-  },
-  {
-    id: "procurement-gap",
-    label: "구매 오퍼레이터화",
-    number: "04",
-    group: "PROBLEM · 현황 진단",
-  },
-  {
-    id: "mass-production",
-    label: "납기 vs 과잉재고",
-    number: "05",
-    group: "PROBLEM · 현황 진단",
-  },
-  {
-    id: "invisible-issues",
-    label: "자산 관리 사각지대",
-    number: "06",
-    group: "PROBLEM · 현황 진단",
-  },
-  {
-    id: "ssot-absent",
-    label: "SSoT 부재",
-    number: "07",
-    group: "PROBLEM · 현황 진단",
-  },
-  {
-    id: "comm-overhead",
-    label: "커뮤니케이션 비용",
-    number: "08",
-    group: "PROBLEM · 현황 진단",
-  },
+  { id: "tobe", label: "하나의 진실원천", number: "04", group: "전환 · TO-BE" },
+  { id: "impact", label: "정량 효과", number: "05", group: "전환 · TO-BE" },
+  { id: "compare", label: "AS-IS vs To-Be", number: "06", group: "전환 · TO-BE" },
 
-  // SOLUTION · BOM Agent
-  {
-    id: "solution-overview",
-    label: "솔루션 개요",
-    number: "09",
-    group: "SOLUTION · BOM Agent",
-  },
-  {
-    id: "architecture",
-    label: "시스템 아키텍처",
-    number: "10",
-    group: "SOLUTION · BOM Agent",
-  },
-  {
-    id: "features",
-    label: "핵심 기능",
-    number: "11",
-    group: "SOLUTION · BOM Agent",
-  },
-  {
-    id: "forecast-engine",
-    label: "Forecast Engine",
-    number: "12",
-    group: "SOLUTION · BOM Agent",
-  },
-
-  // IMPACT · 도입 효과
-  {
-    id: "before-after",
-    label: "Before / After",
-    number: "13",
-    group: "IMPACT · 도입 효과",
-  },
-  {
-    id: "expected-impact",
-    label: "기대 효과",
-    number: "14",
-    group: "IMPACT · 도입 효과",
-  },
-
-  // ROADMAP · 확장 방향
-  {
-    id: "roadmap",
-    label: "확장 로드맵",
-    number: "15",
-    group: "ROADMAP · 확장 방향",
-  },
+  { id: "deliverables", label: "무엇을 만들었나", number: "07", group: "산출물 · 화두" },
+  { id: "questions", label: "남은 화두", number: "08", group: "산출물 · 화두" },
+  { id: "closing", label: "핵심 메시지", number: "09", group: "산출물 · 화두" },
 ];

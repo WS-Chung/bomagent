@@ -42,7 +42,9 @@ export default function HomeShell() {
       const t = e.target as HTMLElement | null;
       if (
         t &&
-        (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)
+        (t.tagName === "INPUT" ||
+          t.tagName === "TEXTAREA" ||
+          t.isContentEditable)
       )
         return;
       const idx = slideIds.indexOf(activeId);

@@ -26,6 +26,7 @@ export default function FlowDiagram({
     </ol>
   );
 }
+
 function Arrow() {
   return (
     <div className="flow-arrow py-0.5" aria-hidden>

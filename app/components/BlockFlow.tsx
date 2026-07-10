@@ -28,7 +28,10 @@ export default function BlockFlow({
               {it.num && <span className="num">STEP {it.num}</span>}
               <div className="flex items-center gap-1.5 min-w-0">
                 {it.icon && (
-                  <span className="text-base text-brand-300 shrink-0" aria-hidden>
+                  <span
+                    className="text-base text-brand-300 shrink-0"
+                    aria-hidden
+                  >
                     {it.icon}
                   </span>
                 )}
@@ -47,7 +50,6 @@ export default function BlockFlow({
 function Connector() {
   return (
     <>
-      {/* 모바일: 세로 화살표 */}
       <svg
         width="18"
         height="20"
@@ -66,7 +68,6 @@ function Connector() {
         />
         <polygon points="9,19 3,11 15,11" fill="currentColor" />
       </svg>
-      {/* 데스크톱: 늘어나는 점선 + 고정 화살촉 */}
       <div
         className="hidden sm:flex sm:flex-[1] sm:min-w-[24px] items-center self-center text-slate-500"
         aria-hidden
@@ -87,7 +88,13 @@ function Connector() {
             className="flow-line-anim-h"
           />
         </svg>
-        <svg width="11" height="14" viewBox="0 0 11 14" className="shrink-0" aria-hidden>
+        <svg
+          width="11"
+          height="14"
+          viewBox="0 0 11 14"
+          className="shrink-0"
+          aria-hidden
+        >
           <polygon points="11,7 0,1 0,13" fill="currentColor" />
         </svg>
       </div>

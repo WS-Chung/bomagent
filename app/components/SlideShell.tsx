@@ -3,7 +3,7 @@ import type { ReactNode } from "react";
 type Props = {
   number?: string;
   eyebrow?: string;
-  title: string;
+  title: ReactNode;
   description?: string;
   children: ReactNode;
   variant?: "default" | "appendix";
@@ -20,7 +20,9 @@ export default function SlideShell({
   const isAppendix = variant === "appendix";
   return (
     <article
-      className={`relative slide-enter min-h-screen ${isAppendix ? "appendix-bg" : ""}`}
+      className={`relative slide-enter min-h-screen ${
+        isAppendix ? "appendix-bg" : ""
+      }`}
     >
       <div className="px-6 sm:px-10 lg:px-14 pt-10 sm:pt-14 pb-4">
         <div className="flex items-center gap-2.5 mb-3">
@@ -54,7 +56,7 @@ export default function SlideShell({
           </p>
         )}
       </div>
-      <div className="px-6 sm:px-10 lg:px-14 pb-16 space-y-5">{children}</div>
+      <div className="px-6 sm:px-10 lg:px-14 pb-20 space-y-5">{children}</div>
     </article>
   );
 }
