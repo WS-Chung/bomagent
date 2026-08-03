@@ -1,0 +1,171 @@
+/* =============================================================================
+ * pages/supplier_management.css — SupplierManagementPage styling
+ * -----------------------------------------------------------------------------
+ * Source: 2025-02 UX request — 공급관리 page listing every supplier + inline
+ * [업체정보 수정] button.  Mirrors the density style of the inventory page:
+ * sticky header, hairline gridlines, hover row tint, tokens-only.
+ *
+ * RULE (Req 18.1–18.4): every value below MUST reference a token from
+ * tokens.css via var(--*).  Hardcoded colors / spacings / radii are
+ * forbidden — the regression test at
+ * tests/integration/test_spa_supplier_management_page.py asserts 0
+ * matches for `#[0-9a-fA-F]{3,6}` over this file.
+ * ============================================================================= */
+
+@import url("/static/styles/tokens.css");
+
+/* ─────────────────────────── Page root ───────────────────────────────── */
+.supplier-management-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ─────────────────────────── Status bar ──────────────────────────────── */
+.supplier-management-status {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  min-height: var(--space-md);
+}
+
+.supplier-management-status[data-kind="error"] {
+  color: var(--color-risk-red);
+}
+
+.supplier-management-status[data-kind="empty"] {
+  color: var(--color-ink-muted-48);
+}
+
+/* ─────────────────────────── Table wrapper ───────────────────────────── */
+.supplier-management-table-wrap {
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  overflow: auto;
+  max-height: 70vh;
+  background: var(--color-canvas);
+}
+
+/* ─────────────────────────── Table ───────────────────────────────────── */
+.supplier-management-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-ink);
+}
+
+.supplier-management-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-canvas);
+  border-bottom: var(--border-width-hairline) solid var(--color-hairline);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.supplier-management-table tbody td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--border-width-hairline) solid var(--color-divider-soft);
+  vertical-align: middle;
+  /* Long addresses / emails can be lengthy; allow soft wrap while
+     keeping single-line rendering for short cells. */
+  white-space: normal;
+}
+
+.supplier-management-table tbody tr {
+  cursor: pointer;
+  transition: background-color var(--duration-fade) var(--easing-fade);
+}
+
+.supplier-management-table tbody tr:hover {
+  background: var(--color-canvas-parchment);
+}
+
+.supplier-management-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Emphasise the supplier name — first-column identifier. */
+.supplier-management-table .cell--name {
+  font-weight: 600;
+  color: var(--color-ink);
+  white-space: nowrap;
+}
+
+/* Numeric-adjacent columns (phone) — tabular-nums keeps digit widths
+   consistent when several suppliers are visible side by side. */
+.supplier-management-table .cell--phone {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.supplier-management-table .cell--email {
+  color: var(--color-action);
+  white-space: nowrap;
+}
+
+.supplier-management-table .cell--address {
+  color: var(--color-ink-muted-80);
+}
+
+/* Right-most edit column — fixed width so the button never wraps mid-word. */
+.supplier-management-table .col--edit {
+  width: 1%;
+  white-space: nowrap;
+  text-align: right;
+}
+
+.supplier-management-edit-btn {
+  /* Inherits ``.btn--secondary`` from inventory.css.  We only need a
+     slightly tighter horizontal padding so multiple rows worth of
+     buttons stay comfortably right-aligned. */
+  padding: var(--space-xxs) var(--space-md);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+}
+
+/* ─────────────────────────── Toolbar (2025-02) ───────────────────────
+ * Wraps the top-right "+ 공급사 추가" primary action.  Uses ``flex`` +
+ * ``justify-content: flex-end`` so any future buttons (import / export)
+ * align on the same visual axis. */
+.supplier-management-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.supplier-management-add-btn {
+  /* Inherits ``.btn--primary`` from layout.css.  Padding is kept in
+     step with the [업체정보 수정] secondary button so the vertical
+     rhythm of the header row remains consistent. */
+  padding: var(--space-xxs) var(--space-md);
+  font-size: var(--font-size-body);
+  letter-spacing: var(--letter-spacing-body);
+}
+
+/* ─────────────── 강조(깜빡임) — 공지사항 '대응' 진입 (2026-07) ──────────
+ * 공지사항의 담당자 변경 알림에서 [대응] 으로 진입하면, 원인이 된 공급사
+ * 행에 ``.is-highlighted`` 가 붙어 배경이 amber 로 깜빡인다. 페이지 아무 곳이나
+ * 클릭하면 JS 가 클래스를 제거해 종료된다. 색은 pending-edit 경고 톤 재사용. */
+@keyframes supplier-row-blink {
+  0%,
+  100% {
+    background: var(--color-warning-subtle);
+  }
+  50% {
+    background: transparent;
+  }
+}
+
+.supplier-management-table tbody tr.is-highlighted {
+  animation: supplier-row-blink 1s var(--easing-fade) infinite;
+  box-shadow: inset 3px 0 0 0 var(--color-risk-amber);
+}

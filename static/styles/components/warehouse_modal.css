@@ -1,0 +1,143 @@
+/* =============================================================================
+ * components/warehouse_modal.css — Warehouse map popup (재고관리 UX 2025-01)
+ * -----------------------------------------------------------------------------
+ * Source: user request "warehouse.jpg의 투명도는 35%로 설정해 주세요"
+ *
+ * RULE (Req 18.1–18.4): every color / spacing / radius / typography value
+ * MUST flow through tokens.css.  This file is checked by the shared
+ * hex-color regex in ``test_spa_inventory_page.py``.
+ * ============================================================================= */
+
+@import url("/static/styles/tokens.css");
+
+/* ──────────────────────────── Panel sizing ───────────────────────────
+ * The warehouse map is a fixed-aspect image so we give the panel
+ * enough room to render it at a comfortable size without dominating
+ * the viewport.  ``max-width`` is a hard cap; ``max-height`` uses vh
+ * so the popup remains usable on shorter laptop screens. */
+.warehouse-modal__panel {
+  max-width: 720px;
+  width: 100%;
+}
+
+/* ──────────────────────────── Image container ────────────────────────
+ * ``position: relative`` anchors the absolutely-positioned marker
+ * overlay directly on top of the image, so marker coordinates can be
+ * expressed as percentages of the container's dimensions.  ``inline-
+ * block`` shrinks the container to the image's rendered size — the
+ * overlay therefore does not pick up clicks in the empty margin. */
+.warehouse-modal__image-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+
+/* ──────────────────────────── Image ──────────────────────────────────
+ * The image is deliberately faded to 35% opacity per user requirement.
+ * The markers overlay is a sibling element that stays at full opacity,
+ * so pins remain sharp against the softened map. */
+.warehouse-modal__image {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 70vh;
+  opacity: 0.35;
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas-parchment);
+  user-select: none;
+}
+
+/* ──────────────────────────── Overlay ───────────────────────────────
+ * Absolute-positioned layer that hosts marker elements.  Occupies the
+ * full image rect so percentage-based marker positions map to pixels
+ * directly.  ``pointer-events: none`` on the overlay itself keeps the
+ * image underneath clickable (needed for the "click elsewhere to stop
+ * the pulse" behaviour) — individual markers re-enable pointer events
+ * so they still receive clicks. */
+.warehouse-modal__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+/* ──────────────────────────── Marker ─────────────────────────────────
+ * Anchored bottom-center of the pin at the (x_ratio, y_ratio) point so
+ * "click at this pixel" intuitively drops the pin's tip there.  The
+ * label sits below the pin so it doesn't obscure the tip. */
+.warehouse-modal__marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  pointer-events: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xxs);
+  /* Keep the label crisp on the faded map. */
+  opacity: 1;
+  /* Smooth fade when non-highlighted markers dim to 50% while a
+   * sibling marker is highlighted (rule below via :has()). */
+  transition: opacity 200ms ease;
+}
+
+/* When any marker is highlighted, dim the non-highlighted siblings to
+ * 50% opacity so the user's eye is drawn to the target pin.  Uses
+ * :has() on the overlay so no JS class-toggle is required.  Target
+ * browsers (Chrome/Edge on Windows desktop) support :has() natively. */
+.warehouse-modal__overlay:has(.warehouse-modal__marker.is-highlighted)
+  .warehouse-modal__marker:not(.is-highlighted) {
+  opacity: 0.5;
+}
+
+.warehouse-modal__marker-pin {
+  width: 22px;
+  height: 34px;
+  display: block;
+  user-select: none;
+}
+
+.warehouse-modal__marker-label {
+  font-size: var(--font-size-fine);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  padding: 0 var(--space-xxs);
+  border-radius: var(--radius-sm);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px var(--color-action-tint-08);
+}
+
+/* Highlighted marker — pulses scale 1.0 → 1.5 → 1.0 with a stacked
+ * blue drop-shadow halo.  ``filter: drop-shadow`` traces the pin's
+ * transparent-PNG edge rather than a rectangular box-shadow, giving
+ * a soft glow that follows the pin silhouette.  The animation is
+ * intentionally set on the outer .warehouse-modal__marker so the
+ * translate(-50%, -100%) anchor is preserved through every keyframe. */
+@keyframes marker-pulse {
+  0% {
+    transform: translate(-50%, -100%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -100%) scale(1.5);
+  }
+  100% {
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+
+.warehouse-modal__marker.is-highlighted {
+  animation: marker-pulse 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 12px var(--color-action))
+    drop-shadow(0 0 6px var(--color-action));
+  z-index: 2;
+}
+
+/* ──────────────────────────── Body padding ───────────────────────────
+ * The base .modal__body applies vertical padding; we keep that intact
+ * but center the image container so the map sits in the middle of the
+ * body column at any modal width. */
+.warehouse-modal__body {
+  padding: var(--space-sm) 0;
+  text-align: center;
+}

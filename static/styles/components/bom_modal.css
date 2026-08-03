@@ -1,0 +1,413 @@
+/* =============================================================================
+ * components/bom_modal.css — BomModal-specific styling (task 4.6)
+ * -----------------------------------------------------------------------------
+ * Source: design.md §9.5 BomModal, §10.1, §10.3 BomModal 상세
+ * Validates: Requirements 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.7, 12.8, 12.9,
+ *            18.1, 18.2, 18.3, 18.4, 18.7
+ *
+ * RULE (Req 18.1–18.4): every value below MUST flow through tokens.css via
+ * var(--*). The integration test `test_spa_bom_modal.py` asserts 0 matches
+ * for the regex `#[0-9a-fA-F]{3,8}` over this file.
+ *
+ * Layout-only file — the common modal shell (backdrop + panel + footer)
+ * lives in styles/modal.css.  Here we add:
+ *   - The 880px panel width override (design §10.1 / §10.3).
+ *   - The AddItemRow grid (PartPicker + pt + reference + [+ 추가]).
+ *   - The BomItemTable (sticky header, horizontal scroll).
+ *   - The empty-state "BOM 라인이 없습니다" notice.
+ * ============================================================================= */
+
+@import url("/static/styles/tokens.css");
+
+/* ─────────────────────────────── Panel sizing ────────────────────────── */
+/* Design §10.1: BomModal 880px.  The shared modal.css panel caps at 720px,
+   so we widen via a specificity override.  Two selectors (.modal__panel--bom
+   AND .bom-modal__panel) keep specificity > the base rule even when
+   tools strip BEM modifiers. */
+.modal__panel--bom,
+.bom-modal__panel {
+  max-width: 880px;
+  /* The body inside grows; we still let the panel cap at 90vh height
+     (inherited from .modal__panel) so very long BOMs scroll within. */
+}
+
+/* ─────────────────────────────── Body layout ─────────────────────────── */
+.bom-modal__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* ─────────────────────────────── Status bar ──────────────────────────── */
+.bom-modal__status {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  min-height: var(--space-md);
+}
+
+.bom-modal__status[data-kind="empty"] {
+  color: var(--color-ink-muted-48);
+  background: var(--color-canvas-parchment);
+  border: var(--border-width-hairline) dashed var(--color-divider-soft);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+  text-align: center;
+}
+
+.bom-modal__status[data-kind="error"] {
+  color: var(--color-risk-red);
+  background: var(--color-risk-red-bg);
+  border: var(--border-width-hairline) solid var(--color-risk-red);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-sm);
+}
+
+/* ─────────────────────────────── Add row ─────────────────────────────── */
+/* Layout: [PartPicker (flexes) | pt (90px) | reference (flexes) | + 추가] */
+.bom-modal__add-row {
+  display: grid;
+  grid-template-columns: minmax(260px, 1fr) 90px minmax(160px, 1fr) auto;
+  align-items: end;
+  gap: var(--space-sm);
+  padding: var(--space-sm) var(--space-md);
+  background: var(--color-canvas-parchment);
+  border-radius: var(--radius-md);
+}
+
+.bom-modal__picker {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}
+
+.bom-modal__search {
+  width: 100%;
+}
+
+.bom-modal__results {
+  /* Floats below the input; max-height + scroll keeps the dropdown a
+     compact 50-row list (design §10.3). */
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  list-style: none;
+  margin: var(--space-xxs) 0 0 0;
+  padding: var(--space-xxs);
+  background: var(--color-canvas);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-sm);
+  box-shadow: 0 var(--space-xs) var(--space-lg) var(--color-action-tint-08);
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.bom-modal__results[hidden] {
+  display: none;
+}
+
+.bom-modal__selected {
+  padding: var(--space-xs) var(--space-sm);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-action);
+  background: var(--color-action-tint-08);
+  border-radius: var(--radius-sm);
+}
+
+.bom-modal__selected[hidden] {
+  display: none;
+}
+
+/* Reuse the .part-picker__result rules from receiving_modal.css — both
+   files declare them, and CSS de-duplicates safely.  We replicate the
+   minimal subset here so this stylesheet stands alone if loaded first. */
+.bom-modal__results .part-picker__result {
+  padding: var(--space-xs) var(--space-sm);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  color: var(--color-ink);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color var(--duration-fade) var(--easing-fade);
+}
+
+.bom-modal__results .part-picker__result:hover,
+.bom-modal__results .part-picker__result:focus {
+  background: var(--color-divider-soft);
+  outline: none;
+}
+
+.bom-modal__results .part-picker__result--empty,
+.bom-modal__results .part-picker__result--error {
+  color: var(--color-ink-muted-48);
+  cursor: default;
+}
+
+.bom-modal__results .part-picker__result--error {
+  color: var(--color-risk-red);
+  background: var(--color-risk-red-bg);
+}
+
+/* pt + Reference fields (label-on-top so the row stays vertically tidy). */
+.bom-modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+  min-width: 0;
+}
+
+.bom-modal__field-label {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-80);
+  font-weight: 600;
+}
+
+.bom-modal__pt-input {
+  text-align: right;
+}
+
+/* [+ 추가] sits flush against the right edge of the add row. */
+.bom-modal__add-btn {
+  /* The .btn--primary base supplies the pill chrome (radius / colors /
+     padding).  We only enforce a minimum width here so the disabled
+     state does not visually jump when text/icons change. */
+  min-width: calc(var(--space-xxl) * 2);
+}
+
+/* ─────────────────────────────── Table wrapper ───────────────────────── */
+.bom-modal__table-wrap {
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  overflow: auto;
+  max-height: 50vh;
+  background: var(--color-canvas);
+}
+
+.bom-modal__table-wrap[hidden] {
+  display: none;
+}
+
+/* ─────────────────────────────── Table ───────────────────────────────── */
+.bom-modal__table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-ink);
+}
+
+.bom-modal__table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-canvas);
+  border-bottom: var(--border-width-hairline) solid var(--color-hairline);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.bom-modal__table tbody td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--border-width-hairline) solid var(--color-divider-soft);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.bom-modal__table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Column widths — numeric pt right-aligned, action column narrow. */
+.bom-modal__th--num,
+.bom-modal__td--num {
+  width: var(--space-xl);
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-ink-muted-48);
+}
+
+.bom-modal__th--pt,
+.bom-modal__td--pt {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  min-width: var(--space-xxl);
+}
+
+.bom-modal__th--action,
+.bom-modal__td--action {
+  width: var(--space-xl);
+  text-align: center;
+}
+
+/* PN code columns: monospace for grid alignment. */
+.bom-modal__td--spn {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: var(--font-size-caption);
+  letter-spacing: 0;
+}
+
+/* Hover treatment for the entire row + inline-edit affordance. */
+.bom-modal__row {
+  transition: background-color var(--duration-fade) var(--easing-fade);
+}
+
+.bom-modal__row:hover {
+  background: var(--color-canvas-parchment);
+}
+
+/* Inline-editable cell — invites click and reuses .cell-input on edit. */
+.bom-modal__table .cell--editable {
+  cursor: text;
+  background: var(--color-surface-pearl);
+}
+
+.bom-modal__table .cell--editable:hover {
+  background: var(--color-divider-soft);
+}
+
+.bom-modal__table .cell--editable.is-editing {
+  padding: 0;
+  background: var(--color-canvas);
+}
+
+.bom-modal__cell-input {
+  /* Inherits .cell-input base from pages/inventory.css. We tighten the
+     padding so the numeric input sits flush inside the pt cell. */
+  padding: var(--space-xxs) var(--space-xs);
+}
+
+/* ─────────────────────────────── Delete button ───────────────────────── */
+.bom-modal__delete-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-ink-muted-48);
+  font-size: var(--font-size-h1);
+  line-height: 1;
+  cursor: pointer;
+  padding: var(--space-xxs) var(--space-xs);
+  border-radius: var(--radius-sm);
+  transition:
+    background-color var(--duration-fade) var(--easing-fade),
+    color var(--duration-fade) var(--easing-fade);
+}
+
+.bom-modal__delete-btn:hover {
+  background: var(--color-risk-red-bg);
+  color: var(--color-risk-red);
+}
+
+.bom-modal__delete-btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-risk-red);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ─────────────────────────── Search hint (Issue 4) ───────────────────── */
+/* Displayed under the PartPicker input until the user has run a search
+   or picked a part.  Communicates that free-text alone will not enable
+   [+ 추가] — the user must select a row from the dropdown first. */
+.bom-modal__search-hint {
+  padding: var(--space-xxs) var(--space-xs);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  font-style: italic;
+}
+
+.bom-modal__search-hint[hidden] {
+  display: none;
+}
+
+/* Emphasised top result — pairs with the "↵ Enter 로 선택" footer row so
+   keyboard users understand that hitting Enter picks this row.  Also
+   applied by ``updateFocusedResult`` when the user is walking the list
+   with ArrowUp / ArrowDown. */
+.bom-modal__results .part-picker__result--top {
+  background: var(--color-action-tint-08);
+  border: var(--border-width-hairline) solid var(--color-action);
+  font-weight: 600;
+}
+
+.bom-modal__results .part-picker__result.is-focused {
+  background: var(--color-divider-soft);
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+/* Footer hint row appended after the last result.  Non-interactive —
+   just guides the user through the keyboard shortcuts. */
+.bom-modal__results .part-picker__result--footer {
+  color: var(--color-ink-muted-48);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  cursor: default;
+  text-align: center;
+  border-top: var(--border-width-hairline) dashed var(--color-divider-soft);
+  margin-top: var(--space-xxs);
+  padding-top: var(--space-xs);
+}
+
+.bom-modal__results .part-picker__result--footer:hover,
+.bom-modal__results .part-picker__result--footer:focus {
+  background: transparent;
+}
+
+/* "Soft-disabled" [+ 추가] button — clicks still fire so the handler can
+   toast the "먼저 검색 결과에서 부품을 선택하세요" hint, but the button
+   looks and feels inert.  Two selectors keep specificity above the
+   .btn--primary base defined in layout.css. Opacity + cursor + filter
+   let us reuse the button's own background without introducing a new
+   colour token — the parent .btn--primary hue stays consistent while
+   the button is desaturated by ``filter: grayscale(0.4)`` to signal
+   the disabled state visually. */
+.btn.is-disabled,
+.bom-modal__add-btn.is-disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+.btn.is-disabled:hover,
+.bom-modal__add-btn.is-disabled:hover {
+  /* Preserve the disabled look on hover — no background/color shift. */
+  opacity: 0.45;
+  filter: grayscale(0.4);
+}
+
+/* ─────────────────────── BOM 총액 (footer, 실시간) ─────────────────────
+ * 좌측에 총액, 우측에 [닫기]. footer 를 space-between 으로 배치한다.
+ * 부품 추가/삭제/pt 수정 시 JS(renderTotal)가 값을 즉시 갱신한다. */
+.bom-modal__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+}
+
+.bom-modal__total {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+}
+
+.bom-modal__total-label {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+}
+
+.bom-modal__total-value {
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}

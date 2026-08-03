@@ -1,0 +1,108 @@
+/* =============================================================================
+ * tokens.css — Single Source of Design Tokens
+ * -----------------------------------------------------------------------------
+ * This file is the SINGLE SOURCE OF TRUTH for all design tokens in this app.
+ * All downstream stylesheets (layout, modal, pages/*.css, components/*.css)
+ * MUST `@import "/static/styles/tokens.css";` at the top and reference these
+ * CSS custom properties only.
+ *
+ * RULE: No page or component CSS may hardcode colors, spacings, radii,
+ * typography, motion, or layout dimensions. Use the `--*` variables below.
+ * Enforced by grep verification in CI / review.
+ *
+ * Source: design.md §9.3 (디자인 토큰 → CSS 변수)
+ * Validates: Requirements 18.1, 18.2, 18.3, 18.4
+ * ============================================================================= */
+
+:root {
+  /* ---------- Color — borrowed from UIDESIGN.md (Req 18.1) ---------- */
+  --color-action: #0066cc;
+  --color-action-focus: #0071e3;
+  --color-ink: #1d1d1f;
+  --color-ink-muted-80: #333333;
+  --color-ink-muted-48: #7a7a7a;
+  --color-canvas: #ffffff;
+  --color-canvas-parchment: #f5f5f7;
+  --color-surface-pearl: #fafafc;
+  --color-hairline: #e0e0e0;
+  --color-divider-soft: #f0f0f0;
+
+  /* ---------- Color — project-specific risk tokens ----------
+   * UIDESIGN.md uses a single action color, but this project's core value
+   * (shortage warning) requires red/amber/green risk distinction.
+   * Saturation is intentionally lowered for sustained-reading comfort.
+   * (design.md §9.3 note, Req #14, #18)
+   */
+  --color-risk-red:      #d70015;
+  --color-risk-red-bg:   #fdecee;
+  --color-risk-amber:    #b25000;
+  --color-risk-amber-bg: #fdf2e6;
+  --color-risk-green:    #248a3d;
+  --color-risk-green-bg: #e8f5ec;
+  /* 대체(SUBSTITUTE, 2026-07) — 짙은 회색 바탕 + 흰색 글씨로 강조.
+   * 다른 위험도(빨강/주황/초록)와 확연히 구분되도록 무채색 계열을 쓴다. */
+  --color-risk-substitute:    #ffffff;
+  --color-risk-substitute-bg: #3a3a3c;
+
+  /* ---------- Pending-edit warning tint (양산계획 batched save) ----------
+   * Light amber wash used by ``.is-pending`` cells / headers to visually
+   * flag "not yet saved" values without borrowing the destructive red.
+   * ``rgba()`` (not hex) — allowed by the tokens-only CSS regex.
+   */
+  --color-warning-subtle: rgba(255, 210, 0, 0.18);
+  --color-warning-mark:   rgba(178, 80, 0, 0.85);
+
+  /* ---------- Radius (Req 18.3) ---------- */
+  --radius-sm: 8px;
+  --radius-md: 11px;
+  --radius-lg: 18px;
+  --radius-pill: 9999px;
+
+  /* ---------- Spacing — 8px base scale (Req 18.4) ---------- */
+  --space-xxs: 4px;
+  --space-xs: 8px;
+  --space-sm: 12px;
+  --space-md: 17px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-xxl: 48px;
+
+  /* ---------- Typography (Req 18.2) ---------- */
+  --font-family: "SF Pro Text", -apple-system, BlinkMacSystemFont,
+                 "Apple SD Gothic Neo", Pretendard, system-ui, sans-serif;
+  /* Monospace-first stack for spreadsheet-like dense tables (양산계획).
+     tabular-nums is a font-variant that most of these families support so
+     digits line up in columns regardless of the numeral used. */
+  --font-family-mono: ui-monospace, "Consolas", "Cascadia Code",
+                      "SF Mono", Menlo, Monaco, "Segoe UI", monospace;
+  --font-size-h1: 28px;          /* PageHeader title (Req 18.9) — matches
+                                    UIDESIGN.md {typography.lead} 28px size. */
+  --font-size-body: 17px;
+  --font-size-caption: 14px;
+  --font-size-fine: 12px;
+  --line-height-body: 1.47;
+  --line-height-tight: 1.24;
+  --letter-spacing-body: -0.374px;
+  --letter-spacing-caption: -0.224px;
+
+  /* ---------- Borders (structural; design §9.4) ---------- */
+  --border-width-hairline: 1px;
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+
+  /* ---------- Active-NavLink tint (design §9.4) ----------
+   * The active sidebar link uses rgba(0,102,204,0.08) — a tinted derivative
+   * of --color-action that CSS cannot synthesize from a hex variable. We
+   * keep both literal forms together so updates stay in sync.
+   */
+  --color-action-tint-08: rgba(0, 102, 204, 0.08);
+
+  /* ---------- Motion (Req 18.7) ---------- */
+  --duration-fade: 220ms;
+  --easing-fade: cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ---------- Layout (Req 18.8, 18.10) ---------- */
+  --sidebar-width: 240px;
+  --content-max-width: 1440px;
+  --min-viewport-width: 1280px;
+}

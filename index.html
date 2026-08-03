@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      Desktop-only ≥1280px (Requirement 18.10).
+      `min-width=1280` keeps mobile browsers from re-scaling below the
+      design floor; we intentionally do not provide a responsive layout.
+    -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, min-width=1280"
+    />
+    <title>BOM 자재관리 에이전트</title>
+
+    <!--
+      Design tokens MUST load before layout.css so that `var(--*)` references
+      in layout resolve at first paint (design §9.3, Requirements 18.1–18.4).
+    -->
+    <link rel="stylesheet" href="/static/styles/tokens.css" />
+    <link rel="stylesheet" href="/static/styles/layout.css" />
+    <!--
+      Modal + page CSS — kept in the entry HTML so the SPA can open modals
+      and render the Inventory page without an extra round-trip. New pages
+      (production-plan, dashboard, ...) add their stylesheet here as they
+      ship in later tasks.
+    -->
+    <link rel="stylesheet" href="/static/styles/modal.css" />
+    <link rel="stylesheet" href="/static/styles/components/receiving_modal.css" />
+    <link rel="stylesheet" href="/static/styles/components/bom_modal.css" />
+    <link rel="stylesheet" href="/static/styles/components/warehouse_modal.css" />
+    <link rel="stylesheet" href="/static/styles/components/warehouse_manage_modal.css" />
+    <link rel="stylesheet" href="/static/styles/pages/inventory.css" />
+    <link rel="stylesheet" href="/static/styles/pages/receiving_history.css" />
+    <link rel="stylesheet" href="/static/styles/pages/production_plan.css" />
+    <link rel="stylesheet" href="/static/styles/pages/dashboard.css" />
+    <link rel="stylesheet" href="/static/styles/pages/audit_log.css" />
+    <link rel="stylesheet" href="/static/styles/pages/supplier_management.css" />
+    <link rel="stylesheet" href="/static/styles/components/supplier_edit_modal.css" />
+    <link rel="stylesheet" href="/static/styles/components/purchase_order_modal.css" />
+    <link rel="stylesheet" href="/static/styles/components/substitute_email_modal.css" />
+    <link rel="stylesheet" href="/static/styles/pages/notices.css" />
+    <link rel="stylesheet" href="/static/styles/components/chat_panel.css" />
+  </head>
+  <body>
+    <!--
+      AppShell — 2-column grid (sidebar 240px + main).
+      Sidebar nav items are pre-rendered as plain anchors so the markup is
+      meaningful before app.js boots; sidebar.js then attaches active-state
+      management and the SPA router takes over click handling.
+      Validates: Requirements 3.1, 3.2, 18.8
+    -->
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="주 메뉴">
+        <div class="sidebar__brand">
+          <span class="sidebar__brand-title">BOM_Agent</span>
+        </div>
+        <nav class="sidebar__nav" id="sidebar-nav">
+          <a class="sidebar__link" href="#/notices" data-route="#/notices"
+            >공지사항</a
+          >
+          <a class="sidebar__link" href="#/inventory" data-route="#/inventory"
+            >재고관리</a
+          >
+          <a
+            class="sidebar__link"
+            href="#/supplier-management"
+            data-route="#/supplier-management"
+            >공급관리</a
+          >
+          <a
+            class="sidebar__link"
+            href="#/production-plan"
+            data-route="#/production-plan"
+            >양산계획</a
+          >
+          <a class="sidebar__link" href="#/dashboard" data-route="#/dashboard"
+            >대시보드</a
+          >
+        </nav>
+
+        <!--
+          KR / EN 표시 전환 (데모 · 화면녹화용).
+          static/i18n.js 가 클릭을 받아 화면의 한국어 텍스트를 영어로
+          치환하거나 원문으로 되돌린다.  API / DB 는 영향을 받지 않는다.
+        -->
+        <div class="lang-toggle" role="group" aria-label="Language">
+          <button
+            type="button"
+            class="lang-toggle__btn is-active"
+            data-lang="ko"
+            aria-pressed="true"
+          >
+            KR
+          </button>
+          <button
+            type="button"
+            class="lang-toggle__btn"
+            data-lang="en"
+            aria-pressed="false"
+          >
+            EN
+          </button>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <header class="page-header">
+          <h1 class="page-header__title" id="page-title">재고관리</h1>
+          <div class="page-header__actions" id="page-actions"></div>
+        </header>
+        <!--
+          The fade transition layer. app.js swaps innerHTML inside #page-body
+          while controlling the `is-fading` class on .page-body for opacity
+          0/1 transitions (design §9.1, Requirement 18.7).
+        -->
+        <section class="page-body" id="page-body" aria-live="polite"></section>
+      </main>
+    </div>
+
+    <!-- Modal portal (used by later tasks; kept here so layout reserves it). -->
+    <div id="modal-portal"></div>
+
+    <!--
+      KR / EN 표시 전환 레이어.  app.js 보다 먼저 로드해 초기 렌더부터
+      선택된 언어가 적용되도록 한다.
+    -->
+    <!--
+      정적 시연용 API 목 레이어.  백엔드 없이 /api/* 요청을 미리 받아둔
+      JSON 스냅샷으로 응답한다.  fetch 를 가로채므로 다른 스크립트보다
+      먼저 로드되어야 한다.
+    -->
+    <script type="module" src="/static/mock/api.js"></script>
+    <script type="module" src="/static/i18n.js"></script>
+    <script type="module" src="/static/app.js"></script>
+  </body>
+</html>

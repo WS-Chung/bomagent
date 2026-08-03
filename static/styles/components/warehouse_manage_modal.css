@@ -1,0 +1,176 @@
+/* =============================================================================
+ * components/warehouse_manage_modal.css — Warehouse manager (창고관리 UX 2025-01)
+ * -----------------------------------------------------------------------------
+ * Source: user request "창고관리 버튼을 눌러 창고관리 모달을 띄웠을 때는
+ *         지도에서 원하는 위치로 마커를 옮기거나 새로 추가/이름 변경/삭제
+ *         할 수 있어야 합니다."
+ *
+ * RULE (Req 18.1–18.4): every color / spacing / radius / typography value
+ * MUST flow through tokens.css.  The shared hex-color regex in
+ * ``test_spa_inventory_page.py`` guards this file too.
+ * ============================================================================= */
+
+@import url("/static/styles/tokens.css");
+
+/* ──────────────────────────── Panel sizing ───────────────────────────
+ * The full-edit variant needs a bit more room than the read-only popup
+ * so the [+ 보관위치 추가] and [완료] buttons fit on one row with the
+ * image scaled to a comfortable working size.  Same 720px ceiling as
+ * warehouse_modal.css keeps the two feeling like siblings. */
+.warehouse-manage-modal__panel {
+  max-width: 720px;
+  width: 100%;
+}
+
+.warehouse-manage-modal__body {
+  padding: var(--space-sm) 0;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.warehouse-manage-modal__hint {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  text-align: left;
+}
+
+/* ──────────────────────────── Image container ────────────────────────
+ * ``position: relative`` anchors the absolute-positioned overlay layer
+ * directly on top of the image, so marker (x, y) ratios map straight to
+ * container percentages. */
+.warehouse-manage-modal__image-container {
+  position: relative;
+  display: inline-block;
+  margin: 0 auto;
+  max-width: 100%;
+  /* Placing-mode cursor scopes to the map area, not the whole modal. */
+}
+
+.warehouse-manage-modal__image-container.is-placing {
+  cursor: crosshair;
+}
+
+.warehouse-manage-modal__image {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  max-height: 70vh;
+  /* Full opacity — the edit view is where users actually work with
+     the map, so the image needs to be crisp. */
+  opacity: 1;
+  border-radius: var(--radius-sm);
+  background: var(--color-canvas-parchment);
+  user-select: none;
+}
+
+.warehouse-manage-modal__overlay {
+  position: absolute;
+  inset: 0;
+}
+
+/* Placing mode inherits the crosshair; view mode passes clicks
+   through the overlay so the image itself owns them (used by the
+   read-only variant to stop the pulse animation — not applicable
+   here, but kept consistent with warehouse_modal.css). */
+.warehouse-manage-modal__image-container:not(.is-placing)
+  .warehouse-manage-modal__overlay {
+  pointer-events: none;
+}
+
+.warehouse-manage-modal__image-container:not(.is-placing)
+  .warehouse-manage-modal__marker {
+  pointer-events: auto;
+}
+
+/* ──────────────────────────── Marker ─────────────────────────────────
+ * Same anchoring rules as warehouse_modal.css (bottom-center of pin
+ * at the persisted coordinate); the CSS is duplicated here to keep
+ * the two modals independent — a future refactor may hoist these
+ * into a shared components/marker.css. */
+.warehouse-manage-modal__marker {
+  position: absolute;
+  transform: translate(-50%, -100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xxs);
+  cursor: grab;
+  touch-action: none;
+}
+
+.warehouse-manage-modal__marker.is-dragging {
+  cursor: grabbing;
+  z-index: 3;
+  filter: drop-shadow(0 4px 8px var(--color-action-tint-08));
+}
+
+.warehouse-manage-modal__marker.is-preview {
+  cursor: default;
+  z-index: 4;
+}
+
+.warehouse-manage-modal__marker-pin {
+  width: 22px;
+  height: 34px;
+  display: block;
+  user-select: none;
+}
+
+.warehouse-manage-modal__marker-label {
+  font-size: var(--font-size-fine);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  padding: 0 var(--space-xxs);
+  border-radius: var(--radius-sm);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  white-space: nowrap;
+  box-shadow: 0 1px 2px var(--color-action-tint-08);
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Inline rename / place input.  Anchored below the pin so it sits in
+   the same visual position as the label it temporarily replaces. */
+.warehouse-manage-modal__marker-input {
+  font-family: var(--font-family);
+  font-size: var(--font-size-fine);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  border: var(--border-width-hairline) solid var(--color-action);
+  border-radius: var(--radius-sm);
+  padding: 0 var(--space-xxs);
+  width: 6ch;
+  min-width: 6ch;
+  max-width: 12ch;
+  text-align: center;
+  outline: none;
+}
+
+.warehouse-manage-modal__marker-input:focus {
+  border-color: var(--color-action-focus);
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-action-tint-08);
+}
+
+/* ──────────────────────────── Footer ─────────────────────────────────
+ * Left: [+ 보관위치 추가].  Right: [완료].  A spacer fills the middle. */
+.warehouse-manage-modal__footer {
+  align-items: center;
+}
+
+.warehouse-manage-modal__add-btn {
+  flex: 0 0 auto;
+}
+
+.warehouse-manage-modal__footer-spacer {
+  flex: 1 1 auto;
+}
+
+.warehouse-manage-modal__done-btn {
+  flex: 0 0 auto;
+}

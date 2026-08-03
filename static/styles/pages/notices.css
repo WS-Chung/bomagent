@@ -1,0 +1,298 @@
+/* =============================================================================
+ * pages/notices.css — NoticesPage (공지사항, 2026-07)
+ * -----------------------------------------------------------------------------
+ * 부서 공유 대시보드. 상단 요약 스트립 + 3개 섹션 카드(양산/개발 · 공급관리 ·
+ * 자재관리). 각 카드 = 중요 알림(대응 버튼) + 최근 7일 변동.
+ *
+ * RULE (Req 18.1–18.4): 모든 color/spacing/radius/typography 값은 tokens.css
+ * 변수를 통해야 한다. 통합 테스트가 이 파일에서 hex 리터럴 0건을 단언한다.
+ * ============================================================================= */
+
+@import url("/static/styles/tokens.css");
+
+.notices-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+/* ── 툴바 (최근 변동 기간 토글) ───────────────────────────────────────── */
+.notices-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.notices-toolbar__label {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+}
+
+.notices-period-select {
+  font-family: var(--font-family);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  line-height: var(--line-height-tight);
+  padding: var(--space-xxs) var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  cursor: pointer;
+}
+.notices-period-select:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: var(--focus-ring-offset);
+  border-color: var(--color-action);
+}
+
+/* ── 요약 스트립 ───────────────────────────────────────────────────────── */
+.notices-summary {
+  display: flex;
+  gap: var(--space-md);
+  flex-wrap: wrap;
+}
+
+.notices-stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+  min-width: calc(var(--space-xxl) * 3);
+  padding: var(--space-md) var(--space-lg);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  background: var(--color-canvas);
+}
+
+.notices-stat__value {
+  font-size: var(--font-size-h1);
+  line-height: var(--line-height-tight);
+  font-weight: 700;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.notices-stat__label {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+}
+
+/* 톤별 값 강조 색. */
+.notices-stat[data-tone="warning"] .notices-stat__value {
+  color: var(--color-risk-amber);
+}
+.notices-stat[data-tone="critical"] .notices-stat__value {
+  color: var(--color-risk-substitute-bg);
+}
+.notices-stat[data-tone="info"] .notices-stat__value {
+  color: var(--color-action);
+}
+
+/* ── 상태바 ────────────────────────────────────────────────────────────── */
+.notices-status {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  min-height: var(--space-md);
+}
+.notices-status[data-kind="error"] {
+  color: var(--color-risk-red);
+}
+
+/* ── 섹션 그리드 ───────────────────────────────────────────────────────── */
+.notices-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-lg);
+}
+
+.notice-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-lg);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  background: var(--color-canvas);
+}
+
+.notice-card__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  border-bottom: var(--border-width-hairline) solid var(--color-hairline);
+  padding-bottom: var(--space-xs);
+}
+
+.notice-card__title {
+  margin: 0;
+  font-size: var(--font-size-body);
+  font-weight: 700;
+  color: var(--color-ink);
+}
+
+.notice-card__count {
+  font-size: var(--font-size-fine);
+  color: var(--color-ink-muted-48);
+  font-variant-numeric: tabular-nums;
+}
+
+.notice-card__subhead {
+  margin-top: var(--space-xs);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  font-weight: 600;
+}
+
+.notice-empty {
+  margin: 0;
+  font-size: var(--font-size-caption);
+  color: var(--color-ink-muted-48);
+  font-style: italic;
+}
+
+/* ── 중요 알림 ─────────────────────────────────────────────────────────── */
+.notice-alert-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.notice-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  background: var(--color-surface-pearl);
+}
+
+.notice-alert__badge {
+  flex: 0 0 auto;
+  padding: var(--space-xxs) var(--space-xs);
+  border-radius: var(--radius-pill);
+  font-size: var(--font-size-fine);
+  font-weight: 700;
+  line-height: var(--line-height-tight);
+  white-space: nowrap;
+}
+
+.notice-alert--critical {
+  border-color: var(--color-risk-substitute-bg);
+}
+.notice-alert--critical .notice-alert__badge {
+  background: var(--color-risk-substitute-bg);
+  color: var(--color-risk-substitute);
+}
+
+.notice-alert--warning .notice-alert__badge {
+  background: var(--color-risk-amber-bg);
+  color: var(--color-risk-amber);
+}
+
+.notice-alert--info .notice-alert__badge {
+  background: var(--color-action-tint-08);
+  color: var(--color-action);
+}
+
+.notice-alert__text {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxs);
+}
+
+.notice-alert__title {
+  font-size: var(--font-size-caption);
+  font-weight: 600;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.notice-alert__detail {
+  font-size: var(--font-size-fine);
+  color: var(--color-ink-muted-48);
+  overflow-wrap: anywhere;
+}
+
+/* 🛠 대응 버튼 — 액션 컬러 pill. */
+.notice-respond-btn {
+  flex: 0 0 auto;
+  font-family: var(--font-family);
+  font-size: var(--font-size-fine);
+  font-weight: 600;
+  line-height: var(--line-height-tight);
+  padding: var(--space-xxs) var(--space-sm);
+  border-radius: var(--radius-pill);
+  border: var(--border-width-hairline) solid var(--color-action);
+  background: var(--color-action);
+  color: var(--color-canvas);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity var(--duration-fade) var(--easing-fade);
+}
+.notice-respond-btn:hover {
+  opacity: 0.88;
+}
+.notice-respond-btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ── 최근 변동 리스트 ──────────────────────────────────────────────────── */
+.notice-change-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.notice-change {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-xs);
+  padding: var(--space-xxs) 0;
+  border-bottom: var(--border-width-hairline) solid var(--color-divider-soft);
+  font-size: var(--font-size-caption);
+}
+.notice-change:last-child {
+  border-bottom: none;
+}
+
+.notice-change__when {
+  flex: 0 0 auto;
+  color: var(--color-ink-muted-48);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--font-size-fine);
+  min-width: calc(var(--space-xxl) + var(--space-sm));
+}
+
+.notice-change__summary {
+  flex: 1 1 auto;
+  color: var(--color-ink);
+  overflow-wrap: anywhere;
+}
+
+.notice-change__ref {
+  flex: 0 0 auto;
+  color: var(--color-ink-muted-48);
+  font-size: var(--font-size-fine);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 좁은 폭 대응(≤ 1100px): 3열 → 1열 ─────────────────────────────────── */
+@media (max-width: 1100px) {
+  .notices-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

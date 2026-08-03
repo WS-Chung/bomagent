@@ -1,0 +1,418 @@
+/* =============================================================================
+ * pages/inventory.css — InventoryPage styling
+ * -----------------------------------------------------------------------------
+ * Source: design.md §9.2, §9.4, §9.5 InventoryPage
+ * Validates: Requirements 3.6, 4.1, 4.2, 4.3, 4.4, 4.6, 4.7, 7.15,
+ *            18.5, 18.6, 18.7, 18.9
+ *
+ * RULE (Req 18.1–18.4): every value below MUST reference a token from
+ * tokens.css via var(--*). Hardcoded colors / spacings / radii / font sizes
+ * are forbidden — this stylesheet is a binding layer over the token set.
+ *
+ * The integration test at tests/integration/test_spa_inventory_page.py asserts
+ * 0 matches for the regex `#[0-9a-fA-F]{3,6}` over this file.
+ * ============================================================================= */
+
+@import url("/static/styles/tokens.css");
+
+/* ───────────────────────────── Page root ────────────────────────────── */
+.inventory-page {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  /* The page sits inside .page-body which already handles the fade-in.
+     We do not stack additional opacity transitions here. */
+}
+
+/* ─────────────────────────────── Toolbar ────────────────────────────── */
+/* Search input + "+ 입고" pill primary + "입고 이력" text link.
+   Layout: search grows, link sits to its right, primary action on the far
+   right per design §9.5 InventoryPage ASCII. */
+.inventory-toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.inventory-toolbar__search {
+  /* 2025-01 창고관리 UX — 검색창을 무한 확장에서 480px 상한으로 조여
+     "창고관리" 버튼과 "+ 입고" 액션이 오른쪽에 편하게 놓이도록 한다.
+     ``flex: 0 1 480px`` 이면 좁은 뷰포트에서는 스스로 줄고, 넓은
+     뷰포트에서도 480px 이상 뻗어나가지 않는다. */
+  flex: 0 1 480px;
+  min-width: 0;
+  padding: var(--space-sm) var(--space-md);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-tight);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  letter-spacing: var(--letter-spacing-body);
+  transition: border-color var(--duration-fade) var(--easing-fade);
+}
+
+.inventory-toolbar__search:focus {
+  outline: none;
+  border-color: var(--color-action);
+}
+
+.inventory-toolbar__search:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+.inventory-toolbar__history-link {
+  color: var(--color-action);
+  text-decoration: none;
+  font-size: var(--font-size-body);
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-sm);
+}
+
+.inventory-toolbar__history-link:hover {
+  text-decoration: underline;
+}
+
+.inventory-toolbar__history-link:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* ─────────────────────────────── Buttons ────────────────────────────── */
+/* Shared button primitives used by both inventory page + modals.
+   Placed here so the inventory page is self-contained; if more pages need
+   them they can migrate to a shared buttons.css later. */
+.btn {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  letter-spacing: var(--letter-spacing-body);
+  line-height: var(--line-height-tight);
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color var(--duration-fade) var(--easing-fade),
+    color var(--duration-fade) var(--easing-fade),
+    opacity var(--duration-fade) var(--easing-fade);
+}
+
+.btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.btn:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: var(--focus-ring-offset);
+}
+
+/* Pill primary — Action Blue background. Req 18.5. */
+.btn--primary {
+  background: var(--color-action);
+  color: var(--color-canvas);
+  padding: 11px 22px;
+  border-radius: var(--radius-pill);
+  font-weight: 600;
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: var(--color-action-focus);
+}
+
+/* Pearl/secondary — utility buttons. Req 18.6. */
+.btn--secondary {
+  background: var(--color-surface-pearl);
+  color: var(--color-ink-muted-80);
+  border: var(--border-width-hairline) solid var(--color-divider-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-xs) var(--space-md);
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--color-divider-soft);
+  color: var(--color-ink);
+}
+
+/* Inventory toolbar receive button — extra spacing if needed. */
+.inventory-toolbar__receive {
+  flex: 0 0 auto;
+}
+
+/* 2025-01 창고관리 UX — "창고관리" 버튼 (btn--secondary 파생).
+   추가 스타일은 필요 없으며 flex 축약만 지정해 툴바 흐름을 안정화한다. */
+.inventory-toolbar__manage-warehouse {
+  flex: 0 0 auto;
+}
+
+/* ─────────────────────────────── Status bar ─────────────────────────── */
+.inventory-status {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  min-height: var(--space-md);
+}
+
+.inventory-status[data-kind="error"] {
+  color: var(--color-risk-red);
+}
+
+.inventory-status[data-kind="empty"] {
+  color: var(--color-ink-muted-48);
+}
+
+/* ───────────────────────────── Table wrapper ────────────────────────── */
+.inventory-table-wrap {
+  border: var(--border-width-hairline) solid var(--color-hairline);
+  border-radius: var(--radius-md);
+  overflow: auto;
+  /* Keep the sticky header smooth — limit height so the body scrolls,
+     not the whole page. The viewport target is ≥720px tall by Req 18.10
+     (desktop-only). */
+  max-height: 70vh;
+  background: var(--color-canvas);
+}
+
+/* ─────────────────────────────── Table ──────────────────────────────── */
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--font-size-body);
+  letter-spacing: var(--letter-spacing-body);
+  color: var(--color-ink);
+}
+
+.inventory-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--color-canvas);
+  border-bottom: var(--border-width-hairline) solid var(--color-hairline);
+  padding: var(--space-sm) var(--space-md);
+  text-align: left;
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+/* 2025-02 UX — sortable column headers.
+   Each header carries ``.is-sortable`` and a small icon that flips to
+   ▲ / ▼ / ↕ based on ``.is-sorted-asc`` / ``.is-sorted-desc`` /
+   neither.  The icon color leans on --color-action when the column is
+   the active sort key so the user can spot the current sort at a
+   glance across the whole row. */
+.inventory-table th.is-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+.inventory-table th.is-sortable:hover {
+  color: var(--color-ink);
+  background: var(--color-canvas-parchment);
+}
+
+.inventory-table th.is-sortable .sort-icon {
+  margin-left: var(--space-xxs);
+  color: var(--color-ink-muted-48);
+  font-size: var(--font-size-fine);
+}
+
+.inventory-table th.is-sortable:not(.is-sorted-asc):not(.is-sorted-desc)
+  .sort-icon::after {
+  content: "↕";
+}
+
+.inventory-table th.is-sorted-asc .sort-icon::after {
+  content: "▲";
+  color: var(--color-action);
+}
+
+.inventory-table th.is-sorted-desc .sort-icon::after {
+  content: "▼";
+  color: var(--color-action);
+}
+
+.inventory-table th.is-sorted-asc,
+.inventory-table th.is-sorted-desc {
+  color: var(--color-ink);
+}
+
+.inventory-table tbody td {
+  padding: var(--space-sm) var(--space-md);
+  border-bottom: var(--border-width-hairline) solid var(--color-divider-soft);
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.inventory-table tbody tr {
+  cursor: pointer;
+  transition: background-color var(--duration-fade) var(--easing-fade);
+}
+
+.inventory-table tbody tr:hover {
+  background: var(--color-canvas-parchment);
+}
+
+.inventory-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Monospace-ish column to keep PN codes aligned. */
+.inventory-table .cell--code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: var(--font-size-caption);
+  letter-spacing: 0;
+}
+
+/* Editable price cell — invites click. */
+.inventory-table .cell--editable {
+  background: var(--color-surface-pearl);
+  cursor: text;
+}
+
+.inventory-table .cell--editable:hover {
+  background: var(--color-divider-soft);
+}
+
+.inventory-table .cell--editable.is-editing {
+  padding: 0;
+  background: var(--color-canvas);
+}
+
+/* Readonly inventory cell — always disabled visually, no pointer cursor.
+   Req 4.3 / 7.15 — inventory is read-only across the entire UI. */
+.inventory-table .cell--readonly {
+  color: var(--color-ink-muted-48);
+  cursor: default;
+  background: var(--color-canvas-parchment);
+  user-select: none;
+  pointer-events: none;
+}
+
+/* 2025-01 재고관리 페이지 UX — 보관위치 cell.
+   Static text by default; when the row's part carries a
+   storage_location the JS attaches ``.is-clickable`` + a click handler
+   that opens the Warehouse map modal.  The clickable state gets a
+   subtle hover tint + underline so the entire cell reads as a link
+   target without needing a nested <a> element. */
+.inventory-table .cell--storage {
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.inventory-table .cell--storage.is-clickable {
+  color: var(--color-action);
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-color: var(--color-divider-soft);
+  text-underline-offset: 3px;
+  transition: background-color var(--duration-fade) var(--easing-fade);
+}
+
+.inventory-table .cell--storage.is-clickable:hover {
+  background: var(--color-action-tint-08);
+  text-decoration-color: var(--color-action);
+}
+
+.inventory-table .cell--storage.is-clickable:focus-visible {
+  outline: var(--focus-ring-width) solid var(--color-action-focus);
+  outline-offset: calc(var(--focus-ring-offset) * -1);
+}
+
+/* Inline numeric input that replaces the cell text during edit. */
+.cell-input {
+  width: 100%;
+  height: 100%;
+  padding: var(--space-xs) var(--space-md);
+  border: var(--border-width-hairline) solid var(--color-action);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  color: var(--color-ink);
+  background: var(--color-canvas);
+  outline: none;
+}
+
+.cell-input:focus-visible {
+  border-color: var(--color-action-focus);
+  box-shadow: 0 0 0 var(--focus-ring-width) var(--color-action-tint-08);
+}
+
+/* ─────────────────────────────── Pager ──────────────────────────────── */
+.inventory-pager {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+}
+
+.inventory-pager__btn {
+  /* Inherits .btn--secondary; just give it a sensible min-width so [이전]
+     and [다음] keep stable widths as state changes. */
+  min-width: var(--space-xxl);
+  text-align: center;
+}
+
+.inventory-pager__label {
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  color: var(--color-ink-muted-48);
+  padding: 0 var(--space-sm);
+}
+
+/* ─────────────────────────────── Toast ──────────────────────────────── */
+/* Lightweight in-app notifications used to surface PATCH errors etc. */
+.toast-host {
+  position: fixed;
+  right: var(--space-lg);
+  bottom: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.toast {
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-caption);
+  letter-spacing: var(--letter-spacing-caption);
+  opacity: 0;
+  transition: opacity var(--duration-fade) var(--easing-fade);
+  pointer-events: auto;
+}
+
+.toast.is-open {
+  opacity: 1;
+}
+
+.toast--info {
+  background: var(--color-canvas-parchment);
+  color: var(--color-ink);
+  border: var(--border-width-hairline) solid var(--color-hairline);
+}
+
+/* 2025-01 UX (Issue 3, 양산계획 batched save) — toast kind variants
+   for full success and partial success.  Kept alongside .toast--info
+   / .toast--error so all toast styling lives in one place. */
+.toast--success {
+  background: var(--color-risk-green-bg);
+  color: var(--color-risk-green);
+  border: var(--border-width-hairline) solid var(--color-risk-green);
+}
+
+.toast--warning {
+  background: var(--color-risk-amber-bg);
+  color: var(--color-risk-amber);
+  border: var(--border-width-hairline) solid var(--color-risk-amber);
+}
+
+.toast--error {
+  background: var(--color-risk-red-bg);
+  color: var(--color-risk-red);
+  border: var(--border-width-hairline) solid var(--color-risk-red);
+}
